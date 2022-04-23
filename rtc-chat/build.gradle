@@ -14,7 +14,9 @@ android {
             targetCompatibility JavaVersion.VERSION_1_8
         }
     }
-
+    lintOptions {
+        abortOnError false
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -28,9 +30,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // 官方库
-    api group: 'org.webrtc', name: 'google-webrtc', version: '1.0.32006'
+//    api group: 'org.webrtc', name: 'google-webrtc', version: '1.0.32006'
     // 自己编译的库
-//    api project(path: ':libwebrtc')
+    api project(path: ':libwebrtc')
 }
 
 // upload
