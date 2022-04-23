@@ -12,7 +12,6 @@ package org.webrtc;
 
 import android.content.Context;
 
-
 public class Camera1Capturer extends CameraCapturer {
   private final boolean captureToTexture;
 
@@ -29,7 +28,6 @@ public class Camera1Capturer extends CameraCapturer {
       SurfaceTextureHelper surfaceTextureHelper, String cameraName, int width, int height,
       int framerate) {
     Camera1Session.create(createSessionCallback, events, captureToTexture, applicationContext,
-        surfaceTextureHelper, Camera1Enumerator.getCameraIndex(cameraName), width, height,
-        framerate);
+        surfaceTextureHelper, cameraName, width, height, framerate);
   }
 }

@@ -12,8 +12,11 @@ package org.webrtc;
 
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
-
+import androidx.annotation.Nullable;
 import java.nio.FloatBuffer;
+import org.webrtc.GlShader;
+import org.webrtc.GlUtil;
+import org.webrtc.RendererCommon;
 
 /**
  * Helper class to implement an instance of RendererCommon.GlDrawer that can accept multiple input
@@ -123,8 +126,8 @@ class GlGenericDrawer implements RendererCommon.GlDrawer {
   private final String genericFragmentSource;
   private final String vertexShader;
   private final ShaderCallbacks shaderCallbacks;
-    private ShaderType currentShaderType;
-    private GlShader currentShader;
+  @Nullable private ShaderType currentShaderType;
+  @Nullable private GlShader currentShader;
   private int inPosLocation;
   private int inTcLocation;
   private int texMatrixLocation;
@@ -216,11 +219,14 @@ class GlGenericDrawer implements RendererCommon.GlDrawer {
       shader = currentShader;
     } else {
       // Allocate new shader.
-      currentShaderType = shaderType;
+      currentShaderType = null;
       if (currentShader != null) {
         currentShader.release();
+        currentShader = null;
       }
+
       shader = createShader(shaderType);
+      currentShaderType = shaderType;
       currentShader = shader;
 
       shader.useProgram();

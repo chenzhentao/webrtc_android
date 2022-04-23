@@ -22,7 +22,8 @@ public class SessionDescription {
   public static enum Type {
     OFFER,
     PRANSWER,
-    ANSWER;
+    ANSWER,
+    ROLLBACK;
 
     public String canonicalForm() {
       return name().toLowerCase(Locale.US);
@@ -51,5 +52,12 @@ public class SessionDescription {
   @CalledByNative
   String getTypeInCanonicalForm() {
     return type.canonicalForm();
+  }
+  @Override
+  public String toString() {
+    return "SessionDescription{" +
+            "type=" + type +
+            ", description='" + description + '\'' +
+            '}';
   }
 }

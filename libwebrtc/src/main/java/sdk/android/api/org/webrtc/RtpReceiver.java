@@ -10,7 +10,8 @@
 
 package org.webrtc;
 
-
+import androidx.annotation.Nullable;
+import org.webrtc.MediaStreamTrack;
 
 /** Java wrapper for a C++ RtpReceiverInterface. */
 public class RtpReceiver {
@@ -24,7 +25,7 @@ public class RtpReceiver {
   private long nativeRtpReceiver;
   private long nativeObserver;
 
-    private MediaStreamTrack cachedTrack;
+  @Nullable private MediaStreamTrack cachedTrack;
 
   @CalledByNative
   public RtpReceiver(long nativeRtpReceiver) {
@@ -33,14 +34,9 @@ public class RtpReceiver {
     cachedTrack = MediaStreamTrack.createMediaStreamTrack(nativeTrack);
   }
 
-
+  @Nullable
   public MediaStreamTrack track() {
     return cachedTrack;
-  }
-
-  public boolean setParameters(  RtpParameters parameters) {
-    checkRtpReceiverExists();
-    return parameters == null ? false : nativeSetParameters(nativeRtpReceiver, parameters);
   }
 
   public RtpParameters getParameters() {
@@ -88,7 +84,6 @@ public class RtpReceiver {
   // This should increment the reference count of the track.
   // Will be released in dispose().
   private static native long nativeGetTrack(long rtpReceiver);
-  private static native boolean nativeSetParameters(long rtpReceiver, RtpParameters parameters);
   private static native RtpParameters nativeGetParameters(long rtpReceiver);
   private static native String nativeGetId(long rtpReceiver);
   private static native long nativeSetObserver(long rtpReceiver, Observer observer);
