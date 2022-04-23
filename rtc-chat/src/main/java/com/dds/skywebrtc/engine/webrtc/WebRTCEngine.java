@@ -45,6 +45,7 @@ import org.webrtc.audio.AudioDeviceModule;
 import org.webrtc.audio.JavaAudioDeviceModule;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -115,8 +116,16 @@ public class WebRTCEngine implements IEngine, Peer.IPeerEvent {
 
             Peer peer = new Peer(_factory, iceServers, id, this);
             peer.setOffer(false);
+
+            List<String> mediaStreamLabels = Collections.singletonList("ARDAMS");
             // add localStream
-            peer.addLocalStream(_localStream);
+            if (_localStream.videoTracks.size() > 0) {
+                peer.addLocalTrack(_localStream.videoTracks.get(0),mediaStreamLabels);
+            }
+            if (_localStream.audioTracks.size() > 0) {
+                peer.addLocalTrack(_localStream.audioTracks.get(0),mediaStreamLabels);
+            }
+
             // 添加列表
             peers.put(id, peer);
         }
@@ -144,8 +153,14 @@ public class WebRTCEngine implements IEngine, Peer.IPeerEvent {
         // create Peer
         Peer peer = new Peer(_factory, iceServers, userId, this);
         peer.setOffer(true);
+        List<String> mediaStreamLabels = Collections.singletonList("ARDAMS");
         // add localStream
-        peer.addLocalStream(_localStream);
+        if (_localStream.videoTracks.size() > 0) {
+            peer.addLocalTrack(_localStream.videoTracks.get(0),mediaStreamLabels);
+        }
+        if (_localStream.audioTracks.size() > 0) {
+            peer.addLocalTrack(_localStream.audioTracks.get(0),mediaStreamLabels);
+        }
         // 添加列表
         peers.put(userId, peer);
         // createOffer

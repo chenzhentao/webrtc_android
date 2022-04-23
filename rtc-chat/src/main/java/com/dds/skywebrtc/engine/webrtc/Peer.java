@@ -5,21 +5,26 @@ import android.util.Log;
 
 import com.dds.skywebrtc.render.ProxyVideoSink;
 
+import org.webrtc.CalledByNative;
 import org.webrtc.DataChannel;
 import org.webrtc.EglBase;
 import org.webrtc.IceCandidate;
 import org.webrtc.MediaConstraints;
 import org.webrtc.MediaStream;
+import org.webrtc.MediaStreamTrack;
 import org.webrtc.PeerConnection;
 import org.webrtc.PeerConnectionFactory;
 import org.webrtc.RendererCommon;
 import org.webrtc.RtpReceiver;
+import org.webrtc.RtpTransceiver;
 import org.webrtc.SdpObserver;
 import org.webrtc.SessionDescription;
 import org.webrtc.SurfaceViewRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by dds on 2020/3/11.
@@ -36,6 +41,7 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
     private final IPeerEvent mEvent;
     private boolean isOffer;
 
+    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
     public MediaStream _remoteStream;
     public SurfaceViewRenderer renderer;
     public ProxyVideoSink sink;
@@ -95,10 +101,10 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
     }
 
     //添加本地流
-    public void addLocalStream(MediaStream stream) {
+    public void addLocalTrack(MediaStreamTrack track, List<String> streamIds) {
         if (pc == null) return;
         Log.d("dds_test", "addLocalStream" + mUserId);
-        pc.addStream(stream);
+        pc.addTrack(track, streamIds);
     }
 
     // 添加RemoteIceCandidate
@@ -106,7 +112,7 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
         Log.d("dds_test", "addRemoteIceCandidate");
         if (pc != null) {
             if (queuedRemoteCandidates != null) {
-               Log.d("dds_test", "addRemoteIceCandidate  2222");
+                Log.d("dds_test", "addRemoteIceCandidate  2222");
                 synchronized (Peer.class) {
                     if (queuedRemoteCandidates != null) {
                         queuedRemoteCandidates.add(candidate);
@@ -114,7 +120,7 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
                 }
 
             } else {
-               Log.d("dds_test", "addRemoteIceCandidate1111");
+                Log.d("dds_test", "addRemoteIceCandidate1111");
                 pc.addIceCandidate(candidate);
             }
         }
@@ -243,9 +249,33 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
 
     @Override
     public void onAddTrack(RtpReceiver receiver, MediaStream[] mediaStreams) {
-        Log.i(TAG, "onAddTrack:" + mediaStreams.length);
+        Log.i(TAG, "onAddTrack 2 : receiver" + receiver+"  " + mediaStreams.length);
+        /*stream.audioTracks.get(0).setEnabled(true);
+        _remoteStream = stream;
+        if (mEvent != null) {
+            mEvent.onRemoteStream(mUserId, stream);
+        }*/
     }
 
+    /**
+     * Triggered when a previously added remote track is removed by the remote
+     * peer, as a result of setRemoteDescription.
+     */
+    @Override
+    public void onRemoveTrack(RtpReceiver receiver) {
+        Log.i(TAG, "onAddTrack 1 :receiver " + receiver);
+    }
+
+    /**
+     * Triggered when the signaling from SetRemoteDescription indicates that a transceiver
+     * will be receiving media from a remote endpoint. This is only called if UNIFIED_PLAN
+     * semantics are specified. The transceiver will be disposed automatically.
+     */
+    @Override
+    public void onTrack(RtpTransceiver transceiver) {
+
+        Log.i(TAG, "onTrack   :receiver " + transceiver);
+    }
 
     //-------------SdpObserver--------------------
     @Override
@@ -263,38 +293,41 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
         Log.d(TAG, "sdp连接成功   " + pc.signalingState().toString());
         if (pc == null) return;
         // 发送者
-        if (isOffer) {
-            if (pc.getRemoteDescription() == null) {
-                Log.d(TAG, "Local SDP set succesfully");
-                if (!isOffer) {
-                    //接收者，发送Answer
-                    mEvent.onSendAnswer(mUserId, localSdp);
+        executor.execute(()->{
+            if (isOffer) {
+                if (pc.getRemoteDescription() == null) {
+                    Log.d(TAG, "Local SDP set succesfully");
+                    if (!isOffer) {
+                        //接收者，发送Answer
+                        mEvent.onSendAnswer(mUserId, localSdp);
+                    } else {
+                        //发送者,发送自己的offer
+                        mEvent.onSendOffer(mUserId, localSdp);
+                    }
                 } else {
-                    //发送者,发送自己的offer
-                    mEvent.onSendOffer(mUserId, localSdp);
-                }
-            } else {
-                Log.d(TAG, "Remote SDP set succesfully");
+                    Log.d(TAG, "Remote SDP set succesfully");
 
-                drainCandidates();
-            }
-
-        } else {
-            if (pc.getLocalDescription() != null) {
-                Log.d(TAG, "Local SDP set succesfully");
-                if (!isOffer) {
-                    //接收者，发送Answer
-                    mEvent.onSendAnswer(mUserId, localSdp);
-                } else {
-                    //发送者,发送自己的offer
-                    mEvent.onSendOffer(mUserId, localSdp);
+                    drainCandidates();
                 }
 
-                drainCandidates();
             } else {
-                Log.d(TAG, "Remote SDP set succesfully");
+                if (pc.getLocalDescription() != null) {
+                    Log.d(TAG, "Local SDP set succesfully");
+                    if (!isOffer) {
+                        //接收者，发送Answer
+                        mEvent.onSendAnswer(mUserId, localSdp);
+                    } else {
+                        //发送者,发送自己的offer
+                        mEvent.onSendOffer(mUserId, localSdp);
+                    }
+
+                    drainCandidates();
+                } else {
+                    Log.d(TAG, "Remote SDP set succesfully");
+                }
             }
-        }
+        });
+
 
 
     }
