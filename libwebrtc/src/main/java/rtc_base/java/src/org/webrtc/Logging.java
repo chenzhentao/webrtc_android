@@ -136,7 +136,7 @@ public class Logging {
       return;
     }
 
-    // Fallback to system log.
+    // Fallback to systemLogger.
     Level level;
     switch (severity) {
       case LS_ERROR:

@@ -1,5 +1,7 @@
 package com.dds.core.socket;
 
+import org.java_websocket.WebSocket;
+
 /**
  * Created by dds on 2019/7/26.
  * ddssingsong@163.com

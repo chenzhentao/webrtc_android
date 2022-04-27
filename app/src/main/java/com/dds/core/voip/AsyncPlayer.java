@@ -7,7 +7,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.os.SystemClock;
-import android.util.Log;
+import com.dds.skywebrtc.Logger;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -49,9 +49,9 @@ public class AsyncPlayer {
             }
             mPlayer = player;
         } catch (IOException e) {
-            Log.w(mTag, "error loading sound for " + cmd.uri, e);
+            Logger.w(mTag, "error loading sound for " + cmd.uri, e);
         } catch (IllegalStateException e) {
-            Log.w(mTag, "IllegalStateException (content provider died?) " + cmd.uri, e);
+            Logger.w(mTag, "IllegalStateException (content provider died?) " + cmd.uri, e);
         }
     }
 
@@ -80,7 +80,7 @@ public class AsyncPlayer {
                             mPlayer.release();
                             mPlayer = null;
                         } else {
-                            Log.w(mTag, "STOP command without a player");
+                            Logger.w(mTag, "STOP command without a player");
                         }
                         break;
                 }

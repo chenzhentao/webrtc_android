@@ -2,7 +2,7 @@ package com.dds.core.util;
 
 import android.app.Activity;
 import android.app.Application;
-import android.util.Log;
+import com.dds.skywebrtc.Logger;
 
 import androidx.collection.ArrayMap;
 
@@ -63,7 +63,7 @@ public class ActivityStackManager {
      * 获取栈底部的Activity
      */
     public Activity getBottomActivity() {
-        Log.d(TAG, "getBottomActivity mActivitySet.size() = " + mActivitySet.size());
+       Logger.d(TAG, "getBottomActivity mActivitySet.size() = " + mActivitySet.size());
         if (mActivitySet.size() > 0) {
             return mActivitySet.get(mActivitySet.keyAt(0));
         } else {

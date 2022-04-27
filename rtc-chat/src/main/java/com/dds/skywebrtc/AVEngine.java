@@ -1,6 +1,6 @@
 package com.dds.skywebrtc;
 
-import android.util.Log;
+//import com.dds.core.util.Logger;
 import android.view.View;
 
 import com.dds.skywebrtc.engine.EngineCallback;
@@ -96,7 +96,7 @@ public class AVEngine implements IEngine {
 
     @Override
     public void leaveRoom(String userId) {
-        Log.d(TAG, "leaveRoom iEngine = " + iEngine);
+        Logger.d(TAG, "leaveRoom iEngine = " + iEngine);
         if (iEngine == null) {
             return;
         }
@@ -189,7 +189,7 @@ public class AVEngine implements IEngine {
         if (iEngine == null) {
             return;
         }
-         Log.d(TAG,"release");
+         Logger.d(TAG,"release");
         iEngine.release();
     }
 

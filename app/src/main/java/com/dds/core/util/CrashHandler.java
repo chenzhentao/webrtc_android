@@ -1,10 +1,10 @@
 package com.dds.core.util;
 
 import android.content.Intent;
-import android.util.Log;
+import com.dds.skywebrtc.Logger;
 
 import com.dds.App;
-import com.dds.LauncherActivity;
+import com.dds.core.ui.local.LauncherActivity;
 import com.dds.skywebrtc.CallSession;
 import com.dds.skywebrtc.SkyEngineKit;
 
@@ -21,7 +21,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         SkyEngineKit gEngineKit = SkyEngineKit.Instance();
         CallSession session = gEngineKit.getCurrentSession();
 
-        Log.d(TAG, "uncaughtException session = " + session);
+        Logger.d(TAG, "uncaughtException session = " + session);
         if (session != null) {
             gEngineKit.endCall();
         } else {

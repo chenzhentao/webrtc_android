@@ -99,8 +99,8 @@ public class RoomFragment extends Fragment {
         builder.setMessage("自动创建一个房间并进入房间");
         builder.setPositiveButton("确定", (dialog, which) -> {
             // 创建一个房间并进入
-            CallMultiActivity.openActivity(getActivity(),
-                    "room-" + UUID.randomUUID().toString().substring(0, 16), true);
+            CallMultiActivity.openActivity(getActivity(),"room-921c2c70-256a-43"
+                    /*"room-" + UUID.randomUUID().toString().substring(0, 16)*/, true);
 
 
         }).setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
@@ -124,7 +124,7 @@ public class RoomFragment extends Fragment {
             RoomInfo roomInfo = datas.get(position);
             holder.text.setText(roomInfo.getRoomId());
             holder.item_join_room.setOnClickListener(v -> {
-                CallMultiActivity.openActivity(getActivity(), roomInfo.getRoomId(), false);
+                CallMultiActivity.openActivity(getActivity(), "room-921c2c70-256a-43"/*roomInfo.getRoomId()*/, false);
             });
         }
 

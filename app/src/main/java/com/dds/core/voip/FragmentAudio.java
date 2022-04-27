@@ -1,7 +1,7 @@
 package com.dds.core.voip;
 
 import android.os.Build;
-import android.util.Log;
+import com.dds.skywebrtc.Logger;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -13,8 +13,6 @@ import com.dds.skywebrtc.CallSession;
 import com.dds.skywebrtc.EnumType.CallState;
 import com.dds.skywebrtc.SkyEngineKit;
 import com.dds.webrtc.R;
-
-import org.webrtc.NetworkMonitor.NetworkObserver;
 
 /**
  * Created by dds on 2018/7/26.
@@ -106,9 +104,9 @@ public class FragmentAudio extends SingleCallFragment implements View.OnClickLis
         if (id == R.id.acceptImageView) {
             CallSession session = gEngineKit.getCurrentSession();
             if (session != null)
-                Log.d(TAG, "session = " + session + "; session.getState() = " + session.getState());
+                Logger.d(TAG, "session = " + session + "; session.getState() = " + session.getState());
             if (session != null && session.getState() == CallState.Incoming) {
-                session.joinHome(session.getRoomId());
+                session.joinRome(session.getRoomId());
             } else if (session != null) {
                 session.sendRefuse();
             }

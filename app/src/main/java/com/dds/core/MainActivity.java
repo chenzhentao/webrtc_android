@@ -12,7 +12,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.dds.App;
-import com.dds.LauncherActivity;
+import com.dds.core.ui.local.LauncherActivity;
 import com.dds.core.base.BaseActivity;
 import com.dds.core.socket.IUserState;
 import com.dds.core.socket.SocketManager;
@@ -57,7 +57,12 @@ public class MainActivity extends BaseActivity implements IUserState {
     }
 
     @Override
-    public void userLogin() {
+    public void userLogin(String userId) {
+
+    }
+
+    @Override
+    public void localUserLogin(String userId, boolean out) {
 
     }
 

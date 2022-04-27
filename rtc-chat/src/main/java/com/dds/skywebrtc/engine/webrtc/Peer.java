@@ -1,7 +1,7 @@
 package com.dds.skywebrtc.engine.webrtc;
 
 import android.content.Context;
-import android.util.Log;
+import com.dds.skywebrtc.Logger;
 
 import com.dds.skywebrtc.render.ProxyVideoSink;
 
@@ -54,7 +54,7 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
         mUserId = userId;
         queuedRemoteCandidates = new ArrayList<>();
         this.pc = createPeerConnection();
-        Log.d("dds_test", "create Peer:" + mUserId);
+       Logger.d("dds_test", "create Peer:" + mUserId);
 
     }
 
@@ -74,21 +74,21 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
     // 创建offer
     public void createOffer() {
         if (pc == null) return;
-        Log.d("dds_test", "createOffer");
+       Logger.d("dds_test", "createOffer");
         pc.createOffer(this, offerOrAnswerConstraint());
     }
 
     // 创建answer
     public void createAnswer() {
         if (pc == null) return;
-        Log.d("dds_test", "createAnswer");
+       Logger.d("dds_test", "createAnswer");
         pc.createAnswer(this, offerOrAnswerConstraint());
 
     }
 
     // 设置LocalDescription
     public void setLocalDescription(SessionDescription sdp) {
-        Log.d("dds_test", "setLocalDescription");
+       Logger.d("dds_test", "setLocalDescription");
         if (pc == null) return;
         pc.setLocalDescription(this, sdp);
     }
@@ -96,23 +96,23 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
     // 设置RemoteDescription
     public void setRemoteDescription(SessionDescription sdp) {
         if (pc == null) return;
-        Log.d("dds_test", "setRemoteDescription");
+       Logger.d("dds_test", "setRemoteDescription");
         pc.setRemoteDescription(this, sdp);
     }
 
     //添加本地流
     public void addLocalTrack(MediaStreamTrack track, List<String> streamIds) {
         if (pc == null) return;
-        Log.d("dds_test", "addLocalStream" + mUserId);
+       Logger.d("dds_test", "addLocalStream" + mUserId);
         pc.addTrack(track, streamIds);
     }
 
     // 添加RemoteIceCandidate
     public synchronized void addRemoteIceCandidate(final IceCandidate candidate) {
-        Log.d("dds_test", "addRemoteIceCandidate");
+       Logger.d("dds_test", "addRemoteIceCandidate");
         if (pc != null) {
             if (queuedRemoteCandidates != null) {
-                Log.d("dds_test", "addRemoteIceCandidate  2222");
+               Logger.d("dds_test", "addRemoteIceCandidate  2222");
                 synchronized (Peer.class) {
                     if (queuedRemoteCandidates != null) {
                         queuedRemoteCandidates.add(candidate);
@@ -120,7 +120,7 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
                 }
 
             } else {
-                Log.d("dds_test", "addRemoteIceCandidate1111");
+               Logger.d("dds_test", "addRemoteIceCandidate1111");
                 pc.addIceCandidate(candidate);
             }
         }
@@ -140,13 +140,13 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
         renderer.init(mRootEglBase.getEglBaseContext(), new RendererCommon.RendererEvents() {
             @Override
             public void onFirstFrameRendered() {
-                Log.d(TAG, "createRender onFirstFrameRendered");
+               Logger.d(TAG, "createRender onFirstFrameRendered");
 
             }
 
             @Override
             public void onFrameResolutionChanged(int videoWidth, int videoHeight, int rotation) {
-                Log.d(TAG, "createRender onFrameResolutionChanged");
+               Logger.d(TAG, "createRender onFrameResolutionChanged");
             }
         });
         renderer.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FILL);
@@ -186,12 +186,12 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
     //------------------------------Observer-------------------------------------
     @Override
     public void onSignalingChange(PeerConnection.SignalingState signalingState) {
-        Log.i(TAG, "onSignalingChange: " + signalingState);
+       Logger.i(TAG, "onSignalingChange: " + signalingState);
     }
 
     @Override
     public void onIceConnectionChange(PeerConnection.IceConnectionState newState) {
-        Log.i(TAG, "onIceConnectionChange: " + newState);
+       Logger.i(TAG, "onIceConnectionChange: " + newState);
         if (newState == PeerConnection.IceConnectionState.DISCONNECTED || newState == PeerConnection.IceConnectionState.FAILED) {
             mEvent.onDisconnected(mUserId);
         }
@@ -200,12 +200,12 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
 
     @Override
     public void onIceConnectionReceivingChange(boolean receiving) {
-        Log.i(TAG, "onIceConnectionReceivingChange:" + receiving);
+       Logger.i(TAG, "onIceConnectionReceivingChange:" + receiving);
     }
 
     @Override
     public void onIceGatheringChange(PeerConnection.IceGatheringState newState) {
-        Log.i(TAG, "onIceGatheringChange:" + newState.toString());
+       Logger.i(TAG, "onIceGatheringChange:" + newState.toString());
     }
 
     @Override
@@ -216,12 +216,12 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
 
     @Override
     public void onIceCandidatesRemoved(IceCandidate[] candidates) {
-        Log.i(TAG, "onIceCandidatesRemoved:");
+       Logger.i(TAG, "onIceCandidatesRemoved:");
     }
 
     @Override
     public void onAddStream(MediaStream stream) {
-        Log.i(TAG, "onAddStream:");
+       Logger.i(TAG, "onAddStream:");
         stream.audioTracks.get(0).setEnabled(true);
         _remoteStream = stream;
         if (mEvent != null) {
@@ -231,7 +231,7 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
 
     @Override
     public void onRemoveStream(MediaStream stream) {
-        Log.i(TAG, "onRemoveStream:");
+       Logger.i(TAG, "onRemoveStream:");
         if (mEvent != null) {
             mEvent.onRemoveStream(mUserId, stream);
         }
@@ -239,17 +239,17 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
 
     @Override
     public void onDataChannel(DataChannel dataChannel) {
-        Log.i(TAG, "onDataChannel:");
+       Logger.i(TAG, "onDataChannel:");
     }
 
     @Override
     public void onRenegotiationNeeded() {
-        Log.i(TAG, "onRenegotiationNeeded:");
+       Logger.i(TAG, "onRenegotiationNeeded:");
     }
 
     @Override
     public void onAddTrack(RtpReceiver receiver, MediaStream[] mediaStreams) {
-        Log.i(TAG, "onAddTrack 2 : receiver" + receiver+"  " + mediaStreams.length);
+       Logger.i(TAG, "onAddTrack 2 : receiver" + receiver+"  " + mediaStreams.length);
         /*stream.audioTracks.get(0).setEnabled(true);
         _remoteStream = stream;
         if (mEvent != null) {
@@ -263,7 +263,7 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
      */
     @Override
     public void onRemoveTrack(RtpReceiver receiver) {
-        Log.i(TAG, "onAddTrack 1 :receiver " + receiver);
+       Logger.i(TAG, "onAddTrack 1 :receiver " + receiver);
     }
 
     /**
@@ -274,13 +274,13 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
     @Override
     public void onTrack(RtpTransceiver transceiver) {
 
-        Log.i(TAG, "onTrack   :receiver " + transceiver);
+       Logger.i(TAG, "onTrack   :receiver " + transceiver);
     }
 
     //-------------SdpObserver--------------------
     @Override
     public void onCreateSuccess(SessionDescription origSdp) {
-        Log.d(TAG, "sdp创建成功       " + origSdp.type);
+       Logger.d(TAG, "sdp创建成功       " + origSdp.type);
         String sdpString = origSdp.description;
         final SessionDescription sdp = new SessionDescription(origSdp.type, sdpString);
         localSdp = sdp;
@@ -290,13 +290,13 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
 
     @Override
     public void onSetSuccess() {
-        Log.d(TAG, "sdp连接成功   " + pc.signalingState().toString());
+       Logger.d(TAG, "sdp连接成功   " + pc.signalingState().toString());
         if (pc == null) return;
         // 发送者
         executor.execute(()->{
             if (isOffer) {
                 if (pc.getRemoteDescription() == null) {
-                    Log.d(TAG, "Local SDP set succesfully");
+                   Logger.d(TAG, "Local SDP set succesfully");
                     if (!isOffer) {
                         //接收者，发送Answer
                         mEvent.onSendAnswer(mUserId, localSdp);
@@ -305,14 +305,14 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
                         mEvent.onSendOffer(mUserId, localSdp);
                     }
                 } else {
-                    Log.d(TAG, "Remote SDP set succesfully");
+                   Logger.d(TAG, "Remote SDP set succesfully");
 
                     drainCandidates();
                 }
 
             } else {
                 if (pc.getLocalDescription() != null) {
-                    Log.d(TAG, "Local SDP set succesfully");
+                   Logger.d(TAG, "Local SDP set succesfully");
                     if (!isOffer) {
                         //接收者，发送Answer
                         mEvent.onSendAnswer(mUserId, localSdp);
@@ -323,7 +323,7 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
 
                     drainCandidates();
                 } else {
-                    Log.d(TAG, "Remote SDP set succesfully");
+                   Logger.d(TAG, "Remote SDP set succesfully");
                 }
             }
         });
@@ -334,20 +334,20 @@ public class Peer implements SdpObserver, PeerConnection.Observer {
 
     @Override
     public void onCreateFailure(String error) {
-        Log.i(TAG, " SdpObserver onCreateFailure:" + error);
+       Logger.i(TAG, " SdpObserver onCreateFailure:" + error);
     }
 
     @Override
     public void onSetFailure(String error) {
-        Log.i(TAG, "SdpObserver onSetFailure:" + error);
+       Logger.i(TAG, "SdpObserver onSetFailure:" + error);
     }
 
 
     private void drainCandidates() {
-        Log.i("dds_test", "drainCandidates");
+       Logger.i("dds_test", "drainCandidates");
         synchronized (Peer.class) {
             if (queuedRemoteCandidates != null) {
-                Log.d(TAG, "Add " + queuedRemoteCandidates.size() + " remote candidates");
+               Logger.d(TAG, "Add " + queuedRemoteCandidates.size() + " remote candidates");
                 for (IceCandidate candidate : queuedRemoteCandidates) {
                     pc.addIceCandidate(candidate);
                 }

@@ -5,15 +5,16 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/navigation_user">
 
+
     <fragment
-        android:id="@+id/navigation_user"
-        android:name="com.dds.core.ui.user.UserListFragment"
-        android:label="@string/title_user"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_local"
+        android:name="com.dds.core.ui.room.RoomFragment"
+        android:label="@string/title_local"
+        tools:layout="@layout/fragment_local" />
 
     <fragment
         android:id="@+id/navigation_room"
-        android:name="com.dds.core.ui.room.RoomFragment"
+        android:name="com.dds.core.ui.local.LocalFragment"
         android:label="@string/title_room"
         tools:layout="@layout/fragment_room" />
 
@@ -22,4 +23,9 @@
         android:name="com.dds.core.ui.setting.SettingFragment"
         android:label="@string/title_setting"
         tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/navigation_user"
+        android:name="com.dds.core.ui.user.UserListFragment"
+        android:label="@string/title_user"
+        tools:layout="@layout/fragment_home" />
 </navigation>

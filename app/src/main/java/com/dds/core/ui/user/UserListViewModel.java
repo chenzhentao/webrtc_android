@@ -1,6 +1,6 @@
 package com.dds.core.ui.user;
 
-import android.util.Log;
+import com.dds.skywebrtc.Logger;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -34,14 +34,14 @@ public class UserListViewModel extends ViewModel {
                     .get(url, null, new ICallback() {
                         @Override
                         public void onSuccess(String result) {
-                            Log.d("dds_test", result);
+                            Logger.d("dds_test", result);
                             List<UserBean> userBeans = JSON.parseArray(result, UserBean.class);
                             mList.postValue(userBeans);
                         }
 
                         @Override
                         public void onFailure(int code, Throwable t) {
-                            Log.d("dds_test", "code:" + code + ",msg:" + t.toString());
+                            Logger.d("dds_test", "code:" + code + ",msg:" + t.toString());
                         }
                     });
         });

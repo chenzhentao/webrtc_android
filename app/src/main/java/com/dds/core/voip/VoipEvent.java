@@ -2,7 +2,7 @@ package com.dds.core.voip;
 
 import android.media.AudioManager;
 import android.net.Uri;
-import android.util.Log;
+import com.dds.skywebrtc.Logger;
 
 import com.dds.App;
 import com.dds.core.socket.SocketManager;
@@ -106,7 +106,7 @@ public class VoipEvent implements ISkyEvent {
 
     @Override
     public void shouldStopRing() {
-        Log.d(TAG, "shouldStopRing begin");
+       Logger.d(TAG, "shouldStopRing begin");
         ringPlayer.stop();
     }
 }

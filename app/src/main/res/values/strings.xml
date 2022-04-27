@@ -9,6 +9,7 @@
     <string name="av_video_invite">邀请你进行视频通话</string>
 
     <string name="title_user">User</string>
+    <string name="title_local">Local</string>
     <string name="title_room">Room</string>
     <string name="title_setting">Setting</string>
 

@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
+import com.dds.skywebrtc.Logger;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -121,7 +121,7 @@ public class CallForegroundNotification extends ContextWrapper {
                 .setCategory(Notification.CATEGORY_CALL)
                 .setFullScreenIntent(fullScreenPendingIntent, true);
 
-        Log.d(TAG, "getChannelNotificationQ");
+        Logger.d(TAG, "getChannelNotificationQ");
         return notificationBuilder.build();
     }
 

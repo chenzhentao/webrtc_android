@@ -126,7 +126,7 @@ public class NetworkMonitorAutoDetect extends BroadcastReceiver implements Netwo
       // so forward the new NetworkInformation to the observer.
       //
       // linkProperties.toString() has PII that cannot be redacted
-      // very reliably, so do not include in log.
+      // very reliably, so do not include in Logger.
       Logging.d(TAG, "link properties changed");
       onNetworkChanged(network);
     }

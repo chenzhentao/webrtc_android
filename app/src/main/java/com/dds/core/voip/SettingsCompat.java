@@ -13,6 +13,8 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.dds.skywebrtc.Logger;
+
 import java.lang.reflect.Method;
 
 /**
@@ -63,7 +65,7 @@ public class SettingsCompat {
         }
 
         if (manageDrawOverlaysForRom(context)) {
-            Log.d("SettingsCompat", "打开设置页面");
+           Logger.d("SettingsCompat", "打开设置页面");
         }
 
     }
@@ -109,7 +111,7 @@ public class SettingsCompat {
                 Method method = AppOpsManager.class.getDeclaredMethod("checkOp", int.class, int.class, String.class);
                 return AppOpsManager.MODE_ALLOWED == (int) method.invoke(manager, op, Binder.getCallingUid(), context.getPackageName());
             } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+               Logger.e(TAG, Log.getStackTraceString(e));
             }
         }
         return false;
@@ -128,7 +130,7 @@ public class SettingsCompat {
                         .MODE_IGNORED);
                 return true;
             } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+               Logger.e(TAG,Log.getStackTraceString(e));
 
             }
         }
@@ -141,7 +143,7 @@ public class SettingsCompat {
             context.startActivity(intent);
             return true;
         } else {
-            Log.e(TAG, "Intent is not available! " + intent);
+           Logger.e(TAG, "Intent is not available! " + intent);
             return false;
         }
     }

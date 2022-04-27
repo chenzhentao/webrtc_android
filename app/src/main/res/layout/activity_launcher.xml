@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context="com.dds.LauncherActivity">
+    tools:context="com.dds.core.ui.local.LauncherActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -28,6 +28,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+
         <EditText
             android:id="@+id/et_user"
             android:layout_width="match_parent"
@@ -47,6 +48,27 @@
             android:onClick="java"
             android:text="ENTER"
             android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="stop"
+            android:text="stop"
+            android:textAllCaps="false" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
+
 
 </LinearLayout>

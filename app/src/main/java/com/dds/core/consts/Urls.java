@@ -6,10 +6,11 @@ package com.dds.core.consts;
  */
 public class Urls {
 
+//    public final static String IP = "192.168.1.103:5000";
     //    private final static String IP = "192.168.2.111";
     public final static String IP = "42.192.40.58:5000";
 
-    private final static String HOST = "http://" + IP + "/";
+    public final static String HOST = "http://" + IP + "/";
 
     // 信令地址
     public final static String WS = "ws://" + IP + "/ws";

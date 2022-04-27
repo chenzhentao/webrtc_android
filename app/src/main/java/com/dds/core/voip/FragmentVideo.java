@@ -2,7 +2,7 @@ package com.dds.core.voip;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
+import com.dds.skywebrtc.Logger;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -136,7 +136,7 @@ public class FragmentVideo extends SingleCallFragment implements View.OnClickLis
                 descTextView.setText(R.string.av_video_invite);
                 if (currentState == CallState.Incoming) {
                     View surfaceView = gEngineKit.getCurrentSession().setupLocalVideo(false);
-                    Log.d(TAG, "init surfaceView != null is " + (surfaceView != null) + "; isOutgoing = " + isOutgoing + "; currentState = " + currentState);
+                    Logger.d(TAG, "init surfaceView != null is " + (surfaceView != null) + "; isOutgoing = " + isOutgoing + "; currentState = " + currentState);
                     if (surfaceView != null) {
                         localSurfaceView = (SurfaceViewRenderer) surfaceView;
                         localSurfaceView.setZOrderMediaOverlay(false);
@@ -156,7 +156,7 @@ public class FragmentVideo extends SingleCallFragment implements View.OnClickLis
     @Override
     public void didChangeState(CallState state) {
         currentState = state;
-        Log.d(TAG, "didChangeState, state = " + state);
+        Logger.d(TAG, "didChangeState, state = " + state);
         runOnUiThread(() -> {
             if (state == CallState.Connected) {
                 handler.removeMessages(WHAT_DELAY_END_CALL);
@@ -193,7 +193,7 @@ public class FragmentVideo extends SingleCallFragment implements View.OnClickLis
         } else {
             localSurfaceView.setZOrderMediaOverlay(true);
         }
-        Log.d(TAG,
+        Logger.d(TAG,
                 "didCreateLocalVideoTrack localSurfaceView != null is " + (localSurfaceView != null) + "; remoteSurfaceView == null = " + (remoteSurfaceView == null)
         );
 
@@ -226,7 +226,7 @@ public class FragmentVideo extends SingleCallFragment implements View.OnClickLis
 
 
         View surfaceView = gEngineKit.getCurrentSession().setupRemoteVideo(userId, false);
-        Log.d(TAG, "didReceiveRemoteVideoTrack,surfaceView = " + surfaceView);
+        Logger.d(TAG, "didReceiveRemoteVideoTrack,surfaceView = " + surfaceView);
         if (surfaceView != null) {
             fullscreenRenderer.setVisibility(View.VISIBLE);
             remoteSurfaceView = (SurfaceViewRenderer) surfaceView;
@@ -256,7 +256,7 @@ public class FragmentVideo extends SingleCallFragment implements View.OnClickLis
         CallSession session = gEngineKit.getCurrentSession();
         if (id == R.id.acceptImageView) {
             if (session != null && session.getState() == CallState.Incoming) {
-                session.joinHome(session.getRoomId());
+                session.joinRome(session.getRoomId());
             } else if (session != null) {
                 if (callSingleActivity != null) {
                     session.sendRefuse();
@@ -267,7 +267,7 @@ public class FragmentVideo extends SingleCallFragment implements View.OnClickLis
         // 挂断电话
         if (id == R.id.incomingHangupImageView || id == R.id.outgoingHangupImageView || id == R.id.connectedHangupImageView) {
             if (session != null) {
-                Log.d(TAG, "endCall");
+                Logger.d(TAG, "endCall");
                 SkyEngineKit.Instance().endCall();
             }
             if (callSingleActivity != null) callSingleActivity.finish();

@@ -1,6 +1,6 @@
 package com.dds.core.ui.room;
 
-import android.util.Log;
+import com.dds.skywebrtc.Logger;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -34,14 +34,14 @@ public class RoomViewModel extends ViewModel {
             HttpRequestPresenter.getInstance().get(url, null, new ICallback() {
                 @Override
                 public void onSuccess(String result) {
-                    Log.d("dds_test", result);
+                   Logger.d("dds_test", result);
                     List<RoomInfo> roomInfos = JSON.parseArray(result, RoomInfo.class);
                     mList.postValue(roomInfos);
                 }
 
                 @Override
                 public void onFailure(int code, Throwable t) {
-                    Log.d("dds_test", "code:" + code + ",msg:" + t.toString());
+                   Logger.d("dds_test", "code:" + code + ",msg:" + t.toString());
                 }
             });
         });

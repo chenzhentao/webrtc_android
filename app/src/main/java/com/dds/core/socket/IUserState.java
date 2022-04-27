@@ -7,7 +7,8 @@ package com.dds.core.socket;
 public interface IUserState {
 
 
-    void userLogin();
+    void userLogin(String userId);
+    void localUserLogin(String userId, boolean out);
 
     void userLogout();
 

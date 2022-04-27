@@ -1185,7 +1185,7 @@ public class PeerConnection {
   }
 
   /**
-   * Starts recording an RTC event log.
+   * Starts recording an RTC eventLogger.
    *
    * Ownership of the file is transfered to the native code. If an RTC event
    * log is already being recorded, it will be stopped and a new one will start
@@ -1198,7 +1198,7 @@ public class PeerConnection {
   }
 
   /**
-   * Stops recording an RTC event log. If no RTC event log is currently being
+   * Stops recording an RTC eventLogger. If no RTC event log is currently being
    * recorded, this call will have no effect.
    */
   public void stopRtcEventLog() {

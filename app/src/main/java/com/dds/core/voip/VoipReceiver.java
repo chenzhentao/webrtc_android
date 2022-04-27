@@ -8,19 +8,17 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
-import android.view.View;
+import com.dds.skywebrtc.Logger;
+
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.dds.App;
 import com.dds.core.base.BaseActivity;
 import com.dds.core.util.ActivityStackManager;
-import com.dds.permission.Consumer;
 import com.dds.permission.Permissions;
 import com.dds.skywebrtc.SkyEngineKit;
 import com.dds.webrtc.R;
-import com.lxj.xpopup.XPopup;
 import com.tapadoo.alerter.Alerter;
 
 import java.util.ArrayList;
@@ -159,7 +157,7 @@ public class VoipReceiver extends BroadcastReceiver {
                         .addButton("确定", R.style.AlertButtonBgWhite, v -> {
                             Permissions.request(activity, per, integer -> {
                                 shouldStopRing();
-                                Log.d(TAG, "Permissions.request integer = " + integer);
+                                Logger.d(TAG, "Permissions.request integer = " + integer);
                                 if (integer == 0) { //权限同意
                                     onHasPermission(activity, room, list, inviteId, audioOnly, inviteUserName);
                                 } else {
@@ -229,7 +227,7 @@ public class VoipReceiver extends BroadcastReceiver {
     }
 
     private void shouldStopRing() {
-        Log.d(TAG, "shouldStopRing begin");
+        Logger.d(TAG, "shouldStopRing begin");
         ringPlayer.stop();
     }
 }

@@ -9,10 +9,11 @@ import android.media.AudioManager;
 import android.media.projection.MediaProjection;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
+
 import android.view.View;
 
 import com.dds.skywebrtc.EnumType;
+import com.dds.skywebrtc.Logger;
 import com.dds.skywebrtc.engine.EngineCallback;
 import com.dds.skywebrtc.engine.IEngine;
 import com.dds.skywebrtc.render.ProxyVideoSink;
@@ -111,6 +112,7 @@ public class WebRTCEngine implements IEngine, Peer.IPeerEvent {
 
     @Override
     public void joinRoom(List<String> userIds) {
+        Logger.d(TAG, "joinRoom  userIds = " + userIds);
         for (String id : userIds) {
             // create Peer
 
@@ -150,6 +152,7 @@ public class WebRTCEngine implements IEngine, Peer.IPeerEvent {
 
     @Override
     public void userIn(String userId) {
+        Logger.d(TAG, " userIn userId  = " + userId);
         // create Peer
         Peer peer = new Peer(_factory, iceServers, userId, this);
         peer.setOffer(true);
@@ -205,8 +208,8 @@ public class WebRTCEngine implements IEngine, Peer.IPeerEvent {
 
     @Override
     public void receiveAnswer(String userId, String sdp) {
-        Log.d("dds_test", "receiveAnswer--" + userId);
         Peer peer = peers.get(userId);
+        Logger.d("dds_test", "receiveAnswer--" + userId+"  "+peer);
         if (peer != null) {
             SessionDescription sessionDescription = new SessionDescription(SessionDescription.Type.ANSWER, sdp);
             peer.setRemoteDescription(sessionDescription);
@@ -217,7 +220,7 @@ public class WebRTCEngine implements IEngine, Peer.IPeerEvent {
 
     @Override
     public void receiveIceCandidate(String userId, String id, int label, String candidate) {
-        Log.d("dds_test", "receiveIceCandidate--" + userId);
+       Logger.d("dds_test", "receiveIceCandidate--" + userId);
         Peer peer = peers.get(userId);
         if (peer != null) {
             IceCandidate iceCandidate = new IceCandidate(id, label, candidate);
@@ -233,7 +236,7 @@ public class WebRTCEngine implements IEngine, Peer.IPeerEvent {
             peer.close();
             peers.remove(userId);
         }
-       Log.d(TAG, "leaveRoom peers.size() = " + peers.size() + "; mCallback = " + mCallback);
+      Logger.d(TAG, "leaveRoom peers.size() = " + peers.size() + "; mCallback = " + mCallback);
         if (peers.size() <= 1) {
 
             if (mCallback != null) {
@@ -323,7 +326,7 @@ public class WebRTCEngine implements IEngine, Peer.IPeerEvent {
     @Override
     public View setupRemoteVideo(String userId, boolean isO) {
         if (TextUtils.isEmpty(userId)) {
-            Log.e(TAG, "setupRemoteVideo userId is null ");
+           Logger.e(TAG, "setupRemoteVideo userId is null ");
             return null;
         }
         Peer peer = peers.get(userId);
@@ -367,7 +370,7 @@ public class WebRTCEngine implements IEngine, Peer.IPeerEvent {
                 isSwitch = false;
             }
         } else {
-            Log.d(TAG, "Will not switch camera, video caputurer is not a camera");
+           Logger.d(TAG, "Will not switch camera, video caputurer is not a camera");
         }
     }
 
@@ -635,7 +638,7 @@ public class WebRTCEngine implements IEngine, Peer.IPeerEvent {
                 mediaProjectionPermissionResultData, new MediaProjection.Callback() {
             @Override
             public void onStop() {
-                Log.e(TAG, "User revoked permission to capture the screen.");
+               Logger.e(TAG, "User revoked permission to capture the screen.");
             }
         });
     }
@@ -698,10 +701,10 @@ public class WebRTCEngine implements IEngine, Peer.IPeerEvent {
     @Override
     public void onDisconnected(String userId) {
         if (mCallback != null) {
-           Log.d(TAG, "onDisconnected mCallback != null");
+          Logger.d(TAG, "onDisconnected mCallback != null");
             mCallback.onDisconnected(userId);
         } else {
-           Log.d(TAG, "onDisconnected mCallback == null");
+          Logger.d(TAG, "onDisconnected mCallback == null");
         }
     }
 

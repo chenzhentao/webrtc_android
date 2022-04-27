@@ -10,13 +10,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
+import com.dds.skywebrtc.Logger;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.dds.App;
@@ -116,7 +115,7 @@ public class CallSingleActivity extends BaseActivity implements CallSession.Call
                 per = new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
             }
             Permissions.request(this, per, integer -> {
-                Log.d(TAG, "Permissions.request integer = " + integer);
+                Logger.d(TAG, "Permissions.request integer = " + integer);
                 if (integer == 0) {
                     // 权限同意
                     init(targetId, isOutgoing, isAudioOnly, false);

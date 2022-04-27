@@ -9,7 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
-import android.util.Log;
+import com.dds.skywebrtc.Logger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,7 +117,7 @@ public abstract class SingleCallFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MsgEvent<Object> messageEvent) {
         int code = messageEvent.getCode();
-        Log.d(TAG, "onEvent code = $code; endWithNoAnswerFlag = $endWithNoAnswerFlag");
+       Logger.d(TAG, "onEvent code = $code; endWithNoAnswerFlag = $endWithNoAnswerFlag");
         if (code == MsgEvent.CODE_ON_CALL_ENDED) {
             if (endWithNoAnswerFlag) {
                 didCallEndWithReason(EnumType.CallEndReason.Timeout);
